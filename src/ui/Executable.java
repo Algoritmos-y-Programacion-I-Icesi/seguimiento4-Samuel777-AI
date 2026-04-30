@@ -32,7 +32,7 @@ public class Executable {
       System.out.println("2. Agregar evento a un dispositivo");
       System.out.println("3. Actualizar la unidad de consumo de un dispositivo");
       System.out.println("4. Mostrar el consumo total de un dispositivo");
-
+      System.out.println("5. Identificar dispositivos que requieren cambio");
       System.out.println("0. Salir del sistema");
       option = reader.nextInt();
 
@@ -49,10 +49,12 @@ public class Executable {
         case 4:
           showDeviceConsumption();
           break;
+        case 5:
+          control.listDevicesRequiringReplacement();
+          break;
         case 0:
           System.out.println("Gracias por usar nuestros servicios!");
           break;
-
         default:
           System.out.println("Digite una opcion valida");
           break;
@@ -71,8 +73,8 @@ public class Executable {
     double consumption = reader.nextDouble();
     System.out.println("Digite el piso donde se encuentra el dispositivo");
     int floor = reader.nextInt();
-    reader.nextLine(); // Consume the newline character
-
+    reader.nextLine();
+    control.addDevice(floor, serial, consumption);
   }
 
   public void registerEventForDevice() {
@@ -84,7 +86,7 @@ public class Executable {
     LocalDate date = LocalDate.parse(reader.nextLine(), java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy"));
     System.out.println("Digite la cantidad de horas que el dispositivo estuvo encendido");
     double hours = reader.nextDouble();
-
+    control.addEvent(serial, date, hours);
   }
 
   public void updateDeviceConsumptionUnit() {
@@ -94,6 +96,7 @@ public class Executable {
     String serial = reader.nextLine();
     System.out.println("Digite el nuevo valor de consumo del dispositivo");
     double newConsumption = reader.nextDouble();
+    control.updateConsumption(serial, newConsumption);
   }
 
   public void showDeviceConsumption() {
@@ -101,6 +104,7 @@ public class Executable {
     System.out.println("Mostrar consumo total:");
     System.out.println("Digite el serial del dispositivo");
     String serial = reader.nextLine();
-
+    control.calculateDeviceConsumption(serial);
   }
+
 }
